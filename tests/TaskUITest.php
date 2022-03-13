@@ -48,6 +48,15 @@ final class TaskUITest extends WebTestCase
             ->submit();
 
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 4, 15);
+
+        $this->assertEmailCount(1);
+        $event = $this->getMailerEvent();
+        $this->assertEmailIsQueued($event);
+
+        $email = $this->getMailerMessage();
+        $this->assertEmailHeaderSame($email, 'To', 'user@example.com');
+        $this->assertEmailHeaderSame($email, 'From', 'no-reply@example.com');
+        $this->assertEmailTextBodyContains($email, 'The due date of this task has changed');
     }
 
     private function listTasks(): TaskListPage

@@ -49,8 +49,6 @@ final class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-
             $em->flush();
 
             return $this->redirectToRoute('task_list');

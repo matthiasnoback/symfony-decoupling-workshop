@@ -56,4 +56,10 @@ class Task
     {
         $this->dueDate = $dueDate;
     }
+
+    public function assigneeEmailAddress(): string
+    {
+        // TODO take from User $assignee
+        return 'user@example.com';
+    }
 }
