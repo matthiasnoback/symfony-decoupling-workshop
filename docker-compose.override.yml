@@ -12,6 +12,8 @@ services:
       - ./var:/srv/app/var
     environment:
       APP_ENV: dev
+    env_file:
+      - .env.local
 
   caddy:
     volumes:
@@ -25,5 +27,6 @@ services:
   mailer:
     image: schickling/mailcatcher
     ports:
+      - 1025
       - 1080:1080
 ###< symfony/mailer ###

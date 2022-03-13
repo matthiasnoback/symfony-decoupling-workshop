@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu
+
+echo "Adding host UID and host GID to .env file"
+HOST_UID="HOST_UID=$(id -u)"
+HOST_GID="HOST_GID=$(id -g)"
+
+grep "${HOST_UID}" .env || echo -e "${HOST_UID}" | tee -a .env.local
+grep "${HOST_GID}" .env || echo -e "${HOST_GID}" | tee -a .env.local
+
+echo "Pulling Docker images"
+docker-compose build --pull --no-cache
+
+echo ""
+echo "Done"
+echo ""

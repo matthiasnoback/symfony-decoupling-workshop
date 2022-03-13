@@ -34,8 +34,8 @@ final class TaskEditPage
         return $this;
     }
 
-    public function submit(): TaskListPage
+    public function submit(): void
     {
-        return new TaskListPage($this->client, $this->client->submitForm('Save', $this->formData));
+        $this->client->submitForm('Save', $this->formData);
     }
 }

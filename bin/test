@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+docker-compose run php bin/console doctrine:database:create --env=test
+docker-compose run php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+docker-compose run php vendor/bin/phpunit --colors
