@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Tests\Page\NewTaskPage;
 use App\Tests\Page\TaskListPage;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -16,33 +17,27 @@ final class TaskUITest extends WebTestCase
         parent::setUp();
 
         $this->client = self::createClient();
-        $this->client->followRedirects();
+        $this->client->followRedirects(false);
     }
 
     public function testNewAndList(): void
     {
-        $this->client->request('GET', '/task/new');
-        $this->client->submitForm('Save', [
-            'task[task]' => 'Test',
-            'task[dueDate][day]' => '14',
-            'task[dueDate][month]' => '3',
-            'task[dueDate][year]' => '2022',
-        ]);
+        $this->newTask()
+            ->setTask('Test')
+            ->setDueDate(2022, 3, 14)
+            ->submit();
+
+        $this->assertEmailCount(0);
 
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 3, 14);
     }
 
     public function testEdit(): void
     {
-        $this->client->request('GET', '/task/new');
-        $this->client->submitForm('Save', [
-            'task[task]' => 'Test',
-            'task[dueDate][day]' => '14',
-            'task[dueDate][month]' => '3',
-            'task[dueDate][year]' => '2022',
-        ]);
-
-        $this->client->followRedirects(false);
+        $this->newTask()
+            ->setTask('Test')
+            ->setDueDate(2022, 3, 14)
+            ->submit();
 
         $this->listTasks()->taskWithName('Test')->goToEditPage()
             ->setTask('Test')
@@ -56,9 +51,15 @@ final class TaskUITest extends WebTestCase
         $this->assertEmailHeaderSame($email, 'From', 'no-reply@example.com');
         $this->assertEmailTextBodyContains($email, 'The due date of this task has changed');
 
-        $this->client->followRedirect();
-
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 4, 15);
+    }
+
+    private function newTask(): NewTaskPage
+    {
+        return new NewTaskPage(
+            $this->client,
+            $this->client->request('GET', '/task/new')
+        );
     }
 
     private function listTasks(): TaskListPage
