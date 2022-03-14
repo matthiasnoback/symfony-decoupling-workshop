@@ -16,6 +16,11 @@ final class TaskSnippet
         Assert::assertStringContainsString('task', $this->crawler->attr('class'));
     }
 
+    public function nameContains(string $needle): bool
+    {
+        return str_contains($this->crawler->filter('.task-task')->text(), $needle);
+    }
+
     private function dueDate(): string
     {
         return $this->crawler->filter('.task-due-date')->text() ?? '';

@@ -38,4 +38,15 @@ final class TaskEditPage
     {
         $this->client->submitForm('Save', $this->formData);
     }
+
+    public function setIsFinished(bool $isFinished): self
+    {
+        if ($isFinished) {
+            $this->formData['task[isFinished]'] = '1';
+        } else {
+            unset($this->formData['task[isFinished]']);
+        }
+
+        return $this;
+    }
 }

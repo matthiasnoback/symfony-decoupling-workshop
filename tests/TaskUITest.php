@@ -61,6 +61,23 @@ final class TaskUITest extends WebTestCase
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 4, 15);
     }
 
+    public function testFinish(): void
+    {
+        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+
+        $this->newTask()
+            ->setTask('Test')
+            ->setDueDate(2022, 3, 14)
+            ->setAssignedTo('User')
+            ->submit();
+
+        $this->listTasks()->taskWithName('Test')->goToEditPage()
+            ->setIsFinished(true)
+            ->submit();
+
+        $this->listTasks()->assertTaskNotExists('Test');
+    }
+
     public function testAddComment(): void
     {
         $this->newTask()
