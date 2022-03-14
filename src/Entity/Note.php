@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity()
  */
-final class Note
+class Note
 {
     /**
      * @ORM\Column(type="integer")
