@@ -18,7 +18,12 @@ final class TaskSnippet
 
     public function nameContains(string $needle): bool
     {
-        return str_contains($this->crawler->filter('.task-task')->text(), $needle);
+        return str_contains($this->name(), $needle);
+    }
+
+    public function name(): string
+    {
+        return $this->crawler->filter('.task-task')->text();
     }
 
     private function dueDate(): string
@@ -45,5 +50,10 @@ final class TaskSnippet
             $this->client,
             $this->client->click($this->crawler->filter('a[aria-label="Show"]')->first()->link())
         );
+    }
+
+    public function assertIsOverdue(): void
+    {
+        Assert::assertStringContainsString('Overdue', $this->dueDate());
     }
 }

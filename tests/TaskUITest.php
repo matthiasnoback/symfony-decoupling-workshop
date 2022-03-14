@@ -36,6 +36,26 @@ final class TaskUITest extends WebTestCase
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 3, 14);
     }
 
+    public function testListByUrgency(): void
+    {
+        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+
+        $this->newTask()
+            ->setTask('Later')
+            ->setDueDate(2022, 3, 14)
+            ->submit();
+
+        $this->newTask()
+            ->setTask('More urgent')
+            ->setDueDate(2022, 1, 1)
+            ->submit();
+
+        $this->assertEmailCount(0);
+
+        self::assertEquals('More urgent', $this->listTasks()->firstTask()->name());
+        $this->listTasks()->firstTask()->assertIsOverdue();
+    }
+
     public function testEdit(): void
     {
         $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();

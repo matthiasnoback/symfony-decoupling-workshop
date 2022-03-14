@@ -80,8 +80,12 @@ final class TaskController extends AbstractController
             'tasks' => $doctrine->getRepository(Task::class)->findBy(
                 [
                     'isFinished' => false
+                ],
+                [
+                    'dueDate' => 'ASC'
                 ]
-            )
+            ),
+            'now' => new \DateTimeImmutable()
         ]);
     }
 

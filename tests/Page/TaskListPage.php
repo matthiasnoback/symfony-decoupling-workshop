@@ -53,4 +53,12 @@ final class TaskListPage
 
         return $tasks;
     }
+
+    public function firstTask(): TaskSnippet
+    {
+        $tasks = $this->tasks();
+        Assert::assertArrayHasKey(0, $tasks, 'Expected to find at least one task');
+
+        return $tasks[0];
+    }
 }
