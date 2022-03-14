@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2>Users</h2>
+    <p><a href="{{ path('user_new') }}" class="btn btn-success">New user</a></p>
+    <div>
+        {% for user in users %}
+            <div class="card user mb-3" data-id="{{ user.id }}">
+                <div class="card-body">
+                    <h5 class="card-title task-task">{{ user.name }}</h5>
+                    <p class="card-text task-due-date">{{ user.emailAddress }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

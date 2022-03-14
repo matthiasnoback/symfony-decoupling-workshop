@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Tests\Page\NewTaskPage;
+use App\Tests\Page\NewUserPage;
 use App\Tests\Page\TaskListPage;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -22,9 +23,12 @@ final class TaskUITest extends WebTestCase
 
     public function testNewAndList(): void
     {
+        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+
         $this->newTask()
             ->setTask('Test')
             ->setDueDate(2022, 3, 14)
+            ->setAssignedTo('User')
             ->submit();
 
         $this->assertEmailCount(0);
@@ -34,9 +38,12 @@ final class TaskUITest extends WebTestCase
 
     public function testEdit(): void
     {
+        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+
         $this->newTask()
             ->setTask('Test')
             ->setDueDate(2022, 3, 14)
+            ->setAssignedTo('User')
             ->submit();
 
         $this->listTasks()->taskWithName('Test')->goToEditPage()
@@ -79,6 +86,14 @@ final class TaskUITest extends WebTestCase
         return new TaskListPage(
             $this->client,
             $this->client->request('GET', '/')
+        );
+    }
+
+    private function newUser(): NewUserPage
+    {
+        return new NewUserPage(
+            $this->client,
+            $this->client->request('GET', '/user/new')
         );
     }
 }

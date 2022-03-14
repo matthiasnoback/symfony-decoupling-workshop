@@ -21,13 +21,17 @@ final class TaskNotificationsListener
             return;
         }
 
+        if ($task->getAssignedTo() === null) {
+            return;
+        }
+
         if ($event->hasChangedField('dueDate')) {
             $this->mailer->send(
                 (new Email())
                     ->subject('Re: ' . $task->getTask())
                     ->text('The due date of this task has changed')
                     ->from('no-reply@example.com')
-                    ->to($task->assigneeEmailAddress())
+                    ->to($task->getAssignedTo()->getEmailAddress())
             );
         }
     }

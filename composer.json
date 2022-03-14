@@ -90,6 +90,7 @@
         "symfony/css-selector": "6.0.*",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/stopwatch": "6.0.*",
-        "symfony/web-profiler-bundle": "6.0.*"
+        "symfony/web-profiler-bundle": "6.0.*",
+        "ext-dom": "*"
     }
 }

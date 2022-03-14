@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Task;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,6 +20,7 @@ final class TaskType extends AbstractType
         $builder
             ->add('task', TextType::class)
             ->add('dueDate', DateType::class)
+            ->add('assignedTo', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('save', SubmitType::class);
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Page;
 
 use PHPUnit\Framework\Assert;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -37,5 +38,25 @@ final class NewTaskPage
     public function submit(): void
     {
         $this->client->submitForm('Save', $this->formData);
+    }
+
+    public function setAssignedTo(string $name): self
+    {
+        $this->formData['task[assignedTo]'] = $this->userIdForName($name);
+
+        return $this;
+    }
+
+    private function userIdForName($name): string
+    {
+        foreach ($this->crawler->filter('select[name="task[assignedTo]"] option') as $optionNode) {
+            if (str_contains($optionNode->textContent, $name)) {
+                /** @var \DOMAttr $valueAttribute */
+                $valueAttribute = $optionNode->attributes['value'];
+                return $valueAttribute->value;
+            }
+        }
+
+        throw new RuntimeException('Could not find user');
     }
 }

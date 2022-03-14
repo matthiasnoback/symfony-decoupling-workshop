@@ -39,6 +39,11 @@ class Task
      */
     private Collection $notes;
 
+    /**
+     * @ORM\ManyToOne (targetEntity="App\Entity\User")
+     */
+    private ?User $assignedTo = null;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -69,14 +74,18 @@ class Task
         $this->dueDate = $dueDate;
     }
 
-    public function assigneeEmailAddress(): string
-    {
-        // TODO take from User $assignee
-        return 'user@example.com';
-    }
-
     public function getNotes(): Collection
     {
         return $this->notes;
+    }
+
+    public function setAssignedTo(User $user): void
+    {
+        $this->assignedTo = $user;
+    }
+
+    public function getAssignedTo(): ?User
+    {
+        return $this->assignedTo;
     }
 }
