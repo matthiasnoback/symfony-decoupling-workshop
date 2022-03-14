@@ -1,7 +1,6 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h2>Users</h2>
     <p><a href="{{ path('user_new') }}" class="btn btn-success">New user</a></p>
     <div>
         {% for user in users %}

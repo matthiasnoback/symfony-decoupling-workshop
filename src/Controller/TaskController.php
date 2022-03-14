@@ -18,7 +18,7 @@ final class TaskController extends AbstractController
     /**
      * @Route("/task/new", name="task_new")
      */
-    public function new(Request $request, ManagerRegistry $doctrine): Response
+    public function new(Request $request,  ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(TaskType::class);
 
@@ -29,6 +29,8 @@ final class TaskController extends AbstractController
             $em = $doctrine->getManager();
             $em->persist($task);
             $em->flush();
+
+            $this->addFlash('success', 'Task added');
 
             return $this->redirectToRoute('task_list');
         }
@@ -104,7 +106,7 @@ final class TaskController extends AbstractController
             return $this->redirectToRoute('task_show', ['id' => $task->getId()]);
         }
 
-        return $this->renderForm('task/new.html.twig', [
+        return $this->renderForm('task/add-note.html.twig', [
             'form' => $form,
         ]);
     }

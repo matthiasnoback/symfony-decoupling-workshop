@@ -7,8 +7,11 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -38,6 +41,8 @@ final class UserController extends AbstractController
             $user = $form->getData();
             $doctrine->getManager()->persist($user);
             $doctrine->getManager()->flush();
+
+            $this->addFlash('success', 'User added');
 
             return $this->redirectToRoute('user_list');
         }

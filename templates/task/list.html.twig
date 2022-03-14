@@ -1,8 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<h2>Tasks to do</h2>
-    <p><a href="{{ path('task_new') }}" class="btn btn-success">New task</a></p>
+<p><a href="{{ path('task_new') }}" class="btn btn-success">New task</a></p>
 <div>
 {% for task in tasks %}
     <div class="card task mb-3" data-id="{{ task.id }}">
