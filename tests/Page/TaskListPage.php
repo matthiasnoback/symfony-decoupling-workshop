@@ -19,7 +19,7 @@ final class TaskListPage
     public function taskWithName(string $name): TaskSnippet
     {
         foreach ($this->crawler->filter('.task') as $node) {
-            $taskCrawler = new Crawler($node);
+            $taskCrawler = new Crawler($node, $this->crawler->getUri());
             if (str_contains($taskCrawler->filter('.task-task')->text(), $name)) {
                 return new TaskSnippet($this->client, $taskCrawler);
             }

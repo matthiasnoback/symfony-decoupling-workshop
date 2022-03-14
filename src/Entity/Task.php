@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,6 +33,16 @@ class Task
      * @Assert\Type("DateTime")
      */
     private ?DateTime $dueDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="task", cascade={"persist"})
+     */
+    private Collection $notes;
+
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -61,5 +73,10 @@ class Task
     {
         // TODO take from User $assignee
         return 'user@example.com';
+    }
+
+    public function getNotes(): Collection
+    {
+        return $this->notes;
     }
 }

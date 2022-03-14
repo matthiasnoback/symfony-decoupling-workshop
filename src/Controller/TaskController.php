@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Note;
 use App\Entity\Task;
+use App\Form\NoteType;
 use App\Form\TaskType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,12 +62,48 @@ final class TaskController extends AbstractController
     }
 
     /**
+     * @Route("/task/show/{id}", name="task_show")
+     */
+    public function show(Task $task): Response
+    {
+        return $this->render('task/show.html.twig', [
+            'task' => $task,
+        ]);
+    }
+
+    /**
      * @Route("/", name="task_list")
      */
     public function list(ManagerRegistry $doctrine): Response
     {
         return $this->render('task/list.html.twig', [
             'tasks' => $doctrine->getRepository(Task::class)->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/task/{id}/add-note", name="task_add_note")
+     */
+    public function addNote(Request $request, Task $task, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(NoteType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $note = $form->getData();
+
+            /** @var Note $note */
+            $note->setTask($task);
+            $task->getNotes()->add($note);
+
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('task_show', ['id' => $task->getId()]);
+        }
+
+        return $this->renderForm('task/new.html.twig', [
+            'form' => $form,
         ]);
     }
 }

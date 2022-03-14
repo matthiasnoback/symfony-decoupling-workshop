@@ -15,7 +15,7 @@
         {% endblock %}
     </head>
     <body class="{{ app.request.attributes.get('_route') }}">
-        <div class="container">
+        <div class="container" style="max-width: 600px">
             <ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('task_list') }}">Tasks</a>

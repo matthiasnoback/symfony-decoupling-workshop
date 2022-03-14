@@ -33,7 +33,8 @@ final class TaskApiTest extends WebTestCase
                 [
                     'id' => 1,
                     'task' => 'Test',
-                    'dueDate' => '2022-03-14'
+                    'dueDate' => '2022-03-14',
+                    'notes' => [],
                 ]
             ],
             $this->sendJsonGetRequest('/api/task/list')
@@ -67,7 +68,8 @@ final class TaskApiTest extends WebTestCase
                 [
                     'id' => 1,
                     'task' => 'Modified',
-                    'dueDate' => '2022-04-15'
+                    'dueDate' => '2022-04-15',
+                    'notes' => []
                 ]
             ],
             $this->sendJsonGetRequest('/api/task/list')
@@ -83,6 +85,13 @@ final class TaskApiTest extends WebTestCase
     {
         $this->client->request('GET', $url);
 
-        return json_decode($this->client->getResponse()->getContent(), true);
+        $responseContent = $this->client->getResponse()->getContent();
+        self::assertJson($responseContent);
+
+        $decodedContent = json_decode($this->client->getResponse()->getContent(), true);
+
+        self::assertIsArray($decodedContent);
+
+        return $decodedContent;
     }
 }

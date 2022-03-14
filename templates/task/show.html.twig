@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>Task: <span class="task-task">{{ task.task }}</span></h1>
+    <p class="task-due-date">Due date: {{ task.dueDate|date('Y-m-d') }}</p>
+
+    {% for note in task.notes %}
+    <div class="card task-note mb-3" data-id="{{ note.id }}">
+        <div class="card-body">
+            <span class="note-note">{{ note.note }}</span>
+        </div>
+    </div>
+    {% endfor %}
+
+    <p><a href="{{ path('task_add_note', { id: task.id }) }}" class="btn btn-primary">Add a note</a></p>
+{% endblock %}

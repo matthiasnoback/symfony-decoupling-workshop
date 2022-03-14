@@ -33,4 +33,12 @@ final class TaskSnippet
     {
         Assert::assertStringContainsString(sprintf('%04d-%02d-%02d', $year, $month, $day), $this->dueDate());
     }
+
+    public function show(): ShowPage
+    {
+        return new ShowPage(
+            $this->client,
+            $this->client->click($this->crawler->filter('a[aria-label="Show"]')->first()->link())
+        );
+    }
 }
