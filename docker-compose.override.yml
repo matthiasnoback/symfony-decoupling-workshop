@@ -8,7 +8,7 @@ services:
       - ./:/srv/app:rw,cached
       # If you develop on Mac you can remove the var/ directory from the bind-mount
       # for better performance by enabling the next line
-      - /srv/app/var
+      - var:/srv/app/var
     environment:
       APP_ENV: dev
 

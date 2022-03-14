@@ -58,5 +58,6 @@ volumes:
   php_socket:
   caddy_data:
   caddy_config:
+  var:
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
