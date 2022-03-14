@@ -41,11 +41,9 @@ final class TaskController extends AbstractController
     /**
      * @Route("/task/edit/{id}", name="task_edit")
      */
-    public function edit(Request $request, ManagerRegistry $doctrine): Response
+    public function edit(Request $request, Task $task, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-
-        $task = $em->find(Task::class, $request->attributes->getInt('id'));
 
         $form = $this->createForm(TaskType::class, $task);
 
