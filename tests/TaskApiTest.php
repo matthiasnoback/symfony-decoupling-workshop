@@ -35,7 +35,8 @@ final class TaskApiTest extends WebTestCase
                     'task' => 'Test',
                     'dueDate' => '2022-03-14',
                     'notes' => [],
-                    'assignedTo' => null
+                    'assignedTo' => null,
+                    'finished' => false,
                 ]
             ],
             $this->sendJsonGetRequest('/api/task/list')
@@ -71,7 +72,8 @@ final class TaskApiTest extends WebTestCase
                     'task' => 'Modified',
                     'dueDate' => '2022-04-15',
                     'notes' => [],
-                    'assignedTo' => null
+                    'assignedTo' => null,
+                    'finished' => false,
                 ]
             ],
             $this->sendJsonGetRequest('/api/task/list')

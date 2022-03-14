@@ -44,6 +44,11 @@ class Task
      */
     private ?User $assignedTo = null;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isFinished = false;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -87,5 +92,15 @@ class Task
     public function getAssignedTo(): ?User
     {
         return $this->assignedTo;
+    }
+
+    public function setIsFinished(bool $isFinished): void
+    {
+        $this->isFinished = $isFinished;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->isFinished;
     }
 }
