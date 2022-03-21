@@ -11,13 +11,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class UserType extends AbstractType
+final class SignUpType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class);
         $builder->add('emailAddress', EmailType::class);
-        $builder->add('save', SubmitType::class, ['label' => 'Add new user']);
+        $builder->add('save', SubmitType::class, ['label' => 'Sign up']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

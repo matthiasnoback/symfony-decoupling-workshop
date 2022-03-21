@@ -21,7 +21,7 @@ final class TaskType extends AbstractType
         $builder
             ->add('task', TextType::class)
             ->add('dueDate', DateType::class, ['data' => new \DateTimeImmutable()])
-            ->add('assignedTo', EntityType::class, ['class' => User::class, 'required' => false])
+            ->add('assignedTo', EntityType::class, ['class' => User::class, 'required' => false, 'placeholder' => '(nobody)',])
             ->add('isFinished', CheckboxType::class, ['required' => false])
             ->add('save', SubmitType::class);
     }

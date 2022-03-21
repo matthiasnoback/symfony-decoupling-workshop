@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Tests\Page\LoginPage;
 use App\Tests\Page\NewTaskPage;
-use App\Tests\Page\NewUserPage;
+use App\Tests\Page\SignUpPage;
 use App\Tests\Page\TaskListPage;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -23,7 +24,8 @@ final class TaskUITest extends WebTestCase
 
     public function testNewAndList(): void
     {
-        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->login()->setEmailAddress('user@example.com')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -38,7 +40,8 @@ final class TaskUITest extends WebTestCase
 
     public function testListByUrgency(): void
     {
-        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->login()->setEmailAddress('user@example.com')->submit();
 
         $this->newTask()
             ->setTask('Later')
@@ -58,7 +61,8 @@ final class TaskUITest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->login()->setEmailAddress('user@example.com')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -83,7 +87,8 @@ final class TaskUITest extends WebTestCase
 
     public function testFinish(): void
     {
-        $this->newUser()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->login()->setEmailAddress('user@example.com')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -100,6 +105,9 @@ final class TaskUITest extends WebTestCase
 
     public function testAddComment(): void
     {
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
+        $this->login()->setEmailAddress('user@example.com')->submit();
+
         $this->newTask()
             ->setTask('Test')
             ->setDueDate(2022, 3, 14)
@@ -126,11 +134,19 @@ final class TaskUITest extends WebTestCase
         );
     }
 
-    private function newUser(): NewUserPage
+    private function signUp(): SignUpPage
     {
-        return new NewUserPage(
+        return new SignUpPage(
             $this->client,
-            $this->client->request('GET', '/user/new')
+            $this->client->request('GET', '/sign-up')
+        );
+    }
+
+    private function login(): LoginPage
+    {
+        return new LoginPage(
+            $this->client,
+            $this->client->request('GET', '/login')
         );
     }
 }
