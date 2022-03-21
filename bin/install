@@ -5,6 +5,9 @@ set -eu
 echo "Pulling Docker images"
 docker-compose pull
 
+echo "Starting all services"
+docker-compose up -d
+
 echo ""
-echo "Done"
+echo "Now open http://localhost:8080/ in your browser"
 echo ""

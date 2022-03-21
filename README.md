@@ -13,7 +13,7 @@ You'll find all the available training programs here: <https://matthiasnoback.nl
 
 - Clone this repository (`git clone git@github.com:matthiasnoback/symfony-decoupling-workshop.git`) and `cd` into it.
 - Run `bin/install`.
-- Open <https://localhost> in a browser. You should see the homepage of a simple task management app.
+- Open <http://localhost:8080> in a browser. You should see the homepage of a simple task management app.
 
 ## Running development tools
 
