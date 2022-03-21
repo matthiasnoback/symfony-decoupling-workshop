@@ -13,7 +13,7 @@ final class TaskEditPage
 
     public function __construct(
         private KernelBrowser $client,
-        private Crawler $crawler
+        Crawler $crawler
     ) {
         Assert::assertStringContainsString('task_edit', $crawler->filter('body')->attr('class'));
     }

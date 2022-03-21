@@ -12,15 +12,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class TaskController extends AbstractController
 {
     /**
      * @Route("/task/new", name="task_new")
      */
-    public function new(Request $request,  ManagerRegistry $doctrine): Response
+    public function new(Request $request,  ManagerRegistry $doctrine, UserInterface $user): Response
     {
-        $form = $this->createForm(TaskType::class);
+        $task = new Task();
+        $task->setAssignedTo($user);
+        $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

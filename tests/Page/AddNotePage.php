@@ -13,7 +13,7 @@ final class AddNotePage
 
     public function __construct(
         private KernelBrowser $client,
-        private Crawler $crawler
+        Crawler $crawler
     ) {
         Assert::assertStringContainsString('task_add_note', $crawler->filter('body')->attr('class'));
     }

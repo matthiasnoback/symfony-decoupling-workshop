@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Page;
 
+use DOMAttr;
 use PHPUnit\Framework\Assert;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -51,7 +52,7 @@ final class NewTaskPage
     {
         foreach ($this->crawler->filter('select[name="task[assignedTo]"] option') as $optionNode) {
             if (str_contains($optionNode->textContent, $name)) {
-                /** @var \DOMAttr $valueAttribute */
+                /** @var DOMAttr $valueAttribute */
                 $valueAttribute = $optionNode->attributes['value'];
                 return $valueAttribute->value;
             }
