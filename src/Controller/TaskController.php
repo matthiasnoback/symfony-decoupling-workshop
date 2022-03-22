@@ -5,8 +5,10 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\NoteType;
 use App\Form\TaskType;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,7 @@ final class TaskController extends AbstractController
 {
     /**
      * @Route("/task/new", name="task_new")
+     * @param User $user
      */
     public function new(Request $request,  ManagerRegistry $doctrine, UserInterface $user): Response
     {
@@ -88,7 +91,7 @@ final class TaskController extends AbstractController
                     'dueDate' => 'ASC'
                 ]
             ),
-            'now' => new \DateTimeImmutable()
+            'now' => new DateTimeImmutable()
         ]);
     }
 

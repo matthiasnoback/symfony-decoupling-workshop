@@ -25,6 +25,13 @@ final class LoginPage
         return $this;
     }
 
+    public function setPassword(string $password): self
+    {
+        $this->formData['_password'] = $password;
+
+        return $this;
+    }
+
     public function submit(): void
     {
         $this->client->submitForm('Login', $this->formData);

@@ -10,13 +10,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CreateUserCommand extends Command
 {
     public function __construct(
         private ManagerRegistry $doctrine,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private UserPasswordHasherInterface $passwordHasher
     ) {
         parent::__construct();
     }
@@ -31,12 +33,16 @@ final class CreateUserCommand extends Command
         $questionHelper = $this->getHelper('question');
         $style = new SymfonyStyle($input, $output);
 
+        $user = new User();
+
         $name = $questionHelper->ask($input, $output, new Question('Name: '));
         $emailAddress = $questionHelper->ask($input, $output, new Question('Email address: '));
+        $password = $questionHelper->ask($input, $output, new Question('Password: '));
+        $password = $this->passwordHasher->hashPassword($user, $password);
 
-        $user = new User();
         $user->setName($name);
         $user->setEmailAddress($emailAddress);
+        $user->setPassword($password);
 
         $violations = $this->validator->validate($user);
         if (count($violations) > 0) {

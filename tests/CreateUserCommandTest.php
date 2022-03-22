@@ -18,7 +18,7 @@ final class CreateUserCommandTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
-        $tester->setInputs(['Matthias', 'matthiasnoback@gmail.com']);
+        $tester->setInputs(['Matthias', 'matthiasnoback@gmail.com', 'test']);
 
         $tester->run([
             'command'=> 'user:create',

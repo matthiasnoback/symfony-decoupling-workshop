@@ -6,6 +6,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,7 @@ final class SignUpType extends AbstractType
     {
         $builder->add('name', TextType::class, ['label' => 'Your name']);
         $builder->add('emailAddress', EmailType::class, ['label' => 'Your email address']);
+        $builder->add('password', PasswordType::class, ['label' => 'Choose a password']);
         $builder->add('save', SubmitType::class, ['label' => 'Sign up']);
     }
 

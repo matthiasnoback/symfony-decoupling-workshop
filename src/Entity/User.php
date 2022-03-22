@@ -32,6 +32,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $emailAddress;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotNull()
+     */
+    private ?string $password = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -80,6 +86,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): ?string
     {
-        return 'test';
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 }

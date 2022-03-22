@@ -32,6 +32,13 @@ final class SignUpPage
         return $this;
     }
 
+    public function setPassword(string $password): self
+    {
+        $this->formData['sign_up[password]'] = $password;
+
+        return $this;
+    }
+
     public function submit(): void
     {
         $this->client->submitForm('Sign up', $this->formData);

@@ -24,8 +24,8 @@ final class TaskUITest extends WebTestCase
 
     public function testNewAndList(): void
     {
-        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
-        $this->login()->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -40,8 +40,8 @@ final class TaskUITest extends WebTestCase
 
     public function testListByUrgency(): void
     {
-        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
-        $this->login()->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
 
         $this->newTask()
             ->setTask('Later')
@@ -61,8 +61,8 @@ final class TaskUITest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
-        $this->login()->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -87,8 +87,8 @@ final class TaskUITest extends WebTestCase
 
     public function testFinish(): void
     {
-        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
-        $this->login()->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
 
         $this->newTask()
             ->setTask('Test')
@@ -105,8 +105,8 @@ final class TaskUITest extends WebTestCase
 
     public function testAddComment(): void
     {
-        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->submit();
-        $this->login()->setEmailAddress('user@example.com')->submit();
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
 
         $this->newTask()
             ->setTask('Test')

@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\Task;
 use App\Entity\User;
+use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -20,7 +21,7 @@ final class TaskType extends AbstractType
     {
         $builder
             ->add('task', TextType::class)
-            ->add('dueDate', DateType::class, ['data' => new \DateTimeImmutable()])
+            ->add('dueDate', DateType::class, ['data' => new DateTimeImmutable()])
             ->add('assignedTo', EntityType::class, ['class' => User::class, 'required' => false, 'placeholder' => '(nobody)',])
             ->add('isFinished', CheckboxType::class, ['required' => false])
             ->add('save', SubmitType::class);
