@@ -41,6 +41,11 @@ final class NewTaskPage
         $this->client->submitForm('Save', $this->formData);
     }
 
+    public function submitInvalidData(): self
+    {
+        return new self($this->client, $this->client->submitForm('Save', $this->formData));
+    }
+
     public function setAssignedTo(string $name): self
     {
         $this->formData['task[assignedTo]'] = $this->userIdForName($name);
@@ -59,5 +64,13 @@ final class NewTaskPage
         }
 
         throw new RuntimeException('Could not find user');
+    }
+
+    public function assertFormHasError(string $expectedError): void
+    {
+        Assert::assertStringContainsString(
+            $expectedError,
+            $this->crawler->filter('.invalid-feedback')->text()
+        );
     }
 }

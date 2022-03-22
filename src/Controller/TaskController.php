@@ -11,10 +11,12 @@ use App\Form\TaskType;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class TaskController extends AbstractController
 {
@@ -22,7 +24,7 @@ final class TaskController extends AbstractController
      * @Route("/task/new", name="task_new")
      * @param User $user
      */
-    public function new(Request $request,  ManagerRegistry $doctrine, UserInterface $user): Response
+    public function new(Request $request,  ManagerRegistry $doctrine, UserInterface $user, HttpClientInterface $client): Response
     {
         $task = new Task();
         $task->setAssignedTo($user);
@@ -30,15 +32,25 @@ final class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
+            $readabilityScores = $client->request('GET', 'http://readapility.io/api/readability-scores', [
+                'body' => $task->getTask(),
+            ])->toArray();
 
-            $em = $doctrine->getManager();
-            $em->persist($task);
-            $em->flush();
+            if ($readabilityScores['fleschKincaidReadingEase'] < 70) {
+                $form->addError(new FormError('The task description is not easy enough to read'));
+            }
 
-            $this->addFlash('success', 'Task added');
+            if ($form->isValid()) {
+                $task = $form->getData();
 
-            return $this->redirectToRoute('task_list');
+                $em = $doctrine->getManager();
+                $em->persist($task);
+                $em->flush();
+
+                $this->addFlash('success', 'Task added');
+
+                return $this->redirectToRoute('task_list');
+            }
         }
 
         return $this->renderForm('task/new.html.twig', [

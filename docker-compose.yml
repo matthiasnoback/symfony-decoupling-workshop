@@ -18,6 +18,8 @@ services:
       start_period: 30s
     environment:
       APP_ENV: dev
+    external_links:
+      - "web:readapility.io"
 
   web:
     image: matthiasnoback/symfony-decoupling-workshop-web

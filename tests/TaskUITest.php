@@ -38,6 +38,19 @@ final class TaskUITest extends WebTestCase
         $this->listTasks()->taskWithName('Test')->assertDueDateIs(2022, 3, 14);
     }
 
+    public function testComplicatedTaskDescription(): void
+    {
+        $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
+        $this->login()->setEmailAddress('user@example.com')->setPassword('test')->submit();
+
+        $this->newTask()
+            ->setTask('An amazingly complicated task description')
+            ->setDueDate(2022, 3, 14)
+            ->setAssignedTo('User')
+            ->submitInvalidData()
+            ->assertFormHasError('The task description is not easy enough to read');
+    }
+
     public function testListByUrgency(): void
     {
         $this->signUp()->setName('User')->setEmailAddress('user@example.com')->setPassword('test')->submit();
