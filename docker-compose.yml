@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.9"
 
 services:
   php:
@@ -20,6 +20,7 @@ services:
       APP_ENV: dev
     external_links:
       - "web:readapility.io"
+    init: true
 
   web:
     image: matthiasnoback/symfony-decoupling-workshop-web
