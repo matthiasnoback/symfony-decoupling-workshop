@@ -25,7 +25,7 @@ final class SignUpController extends AbstractController
             $doctrine->getManager()->persist($user);
             $doctrine->getManager()->flush();
 
-            $this->addFlash('success', 'User added');
+            $this->addFlash('success', 'Thanks for signing up! You are now ready to login.');
 
             return $this->redirectToRoute('user_list');
         }

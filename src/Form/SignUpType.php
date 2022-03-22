@@ -15,8 +15,8 @@ final class SignUpType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class);
-        $builder->add('emailAddress', EmailType::class);
+        $builder->add('name', TextType::class, ['label' => 'Your name']);
+        $builder->add('emailAddress', EmailType::class, ['label' => 'Your email address']);
         $builder->add('save', SubmitType::class, ['label' => 'Sign up']);
     }
 
