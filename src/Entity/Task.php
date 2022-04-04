@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\Model\Task\TaskWasAlreadyFinished;
+use App\Domain\Model\Task\TaskWasFinished;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -48,6 +50,11 @@ class Task
      * @ORM\Column(type="boolean")
      */
     private bool $isFinished = false;
+
+    /**
+     * @var array<object>
+     */
+    private array $events = [];
 
     public function __construct()
     {
@@ -102,9 +109,22 @@ class Task
     public function finish(): void
     {
         if ($this->isFinished()) {
+            $this->events[] = new TaskWasAlreadyFinished();
+
             return;
         }
 
+        $this->events[] = new TaskWasFinished();
+
         $this->isFinished = true;
+    }
+
+    public function releaseEvents(): array
+    {
+        $events = $this->events;
+
+        $this->events = [];
+
+        return $events;
     }
 }

@@ -5,11 +5,13 @@ namespace App;
 
 use App\Entity\Task;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class FinishTaskHandler
 {
     public function __construct(
-        private readonly ManagerRegistry $doctrine
+        private readonly ManagerRegistry $doctrine,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -25,7 +27,12 @@ final class FinishTaskHandler
 
         /** @var Task $task */
         $task->finish();
+        $events = $task->releaseEvents();
 
         $this->doctrine->getManager()->flush();
+
+        foreach ($events as $event) {
+            $this->eventDispatcher->dispatch($event);
+        }
     }
 }

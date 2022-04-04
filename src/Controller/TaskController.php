@@ -3,28 +3,38 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Domain\Model\Task\TaskWasAlreadyFinished;
+use App\Domain\Model\Task\TaskWasFinished;
 use App\DTO\TaskDTORepositoryInterface;
 use App\Entity\Note;
 use App\Entity\Task;
 use App\Entity\User;
 use App\FinishTask;
-use App\FinishTaskHandler;
 use App\Form\NoteType;
 use App\Form\TaskType;
 use App\TaskInterface;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class TaskController extends AbstractController
+final class TaskController extends AbstractController implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return [
+            TaskWasFinished::class => 'whenTaskWasFinished',
+            TaskWasAlreadyFinished::class => 'whenTaskWasAlreadyFinished',
+        ];
+    }
+
     /**
      * @Route("/task/new", name="task_new")
      * @param User $user
@@ -87,14 +97,26 @@ final class TaskController extends AbstractController
     /**
      * @Route("/task/finish/{id}", name="task_finish", methods={"POST"})
      */
-    public function finish(int $id, TaskInterface $task): Response
+    public function finish(int $id, TaskInterface $task, EventDispatcherInterface $eventDispatcher): Response
     {
         $command = new FinishTask($id);
         $task->finishTask($command);
 
-        $this->addFlash('success', 'Task was finished');
+        $eventDispatcher->addSubscriber($this);
 
         return $this->redirectToRoute('task_show', ['id' => $id]);
+    }
+
+    public function whenTaskWasFinished(TaskWasFinished $event): void
+    {
+        // TODO show this based on a domain event
+        $this->addFlash('success', 'Task was finished');
+    }
+
+    public function whenTaskWasAlreadyFinished(TaskWasAlreadyFinished $event): void
+    {
+        // TODO show this based on a domain event
+        $this->addFlash('success', 'Task was already finished!');
     }
 
     /**
