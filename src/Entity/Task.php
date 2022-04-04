@@ -102,7 +102,7 @@ class Task
     public function finish(): void
     {
         if ($this->isFinished()) {
-            throw new \RuntimeException('Task already finished');
+            return;
         }
 
         $this->isFinished = true;

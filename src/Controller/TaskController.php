@@ -11,6 +11,7 @@ use App\FinishTask;
 use App\FinishTaskHandler;
 use App\Form\NoteType;
 use App\Form\TaskType;
+use App\TaskInterface;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -86,10 +87,10 @@ final class TaskController extends AbstractController
     /**
      * @Route("/task/finish/{id}", name="task_finish", methods={"POST"})
      */
-    public function finish(int $id, FinishTaskHandler $handler): Response
+    public function finish(int $id, TaskInterface $task): Response
     {
         $command = new FinishTask($id);
-        $handler->handle($command);
+        $task->finishTask($command);
 
         $this->addFlash('success', 'Task was finished');
 
