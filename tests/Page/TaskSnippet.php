@@ -39,6 +39,11 @@ final class TaskSnippet
         );
     }
 
+    public function finish(): void
+    {
+        $this->client->submitForm('Finish');
+    }
+
     public function assertDueDateIs(int $year, int $month, int $day): void
     {
         Assert::assertStringContainsString(sprintf('%04d-%02d-%02d', $year, $month, $day), $this->dueDate());

@@ -109,9 +109,7 @@ final class TaskUITest extends WebTestCase
             ->setAssignedTo('User')
             ->submit();
 
-        $this->listTasks()->taskWithName('Test')->goToEditPage()
-            ->setIsFinished(true)
-            ->submit();
+        $this->listTasks()->taskWithName('Test')->finish();
 
         $this->listTasks()->assertTaskNotExists('Test');
     }

@@ -6,12 +6,15 @@ namespace App\Controller;
 use App\Entity\Note;
 use App\Entity\Task;
 use App\Entity\User;
+use App\FinishTask;
+use App\FinishTaskHandler;
 use App\Form\NoteType;
 use App\Form\TaskType;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,6 +80,19 @@ final class TaskController extends AbstractController
         return $this->renderForm('task/new.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/task/finish/{id}", name="task_finish", methods={"POST"})
+     */
+    public function finish(int $id, FinishTaskHandler $handler): Response
+    {
+        $command = new FinishTask($id);
+        $handler->handle($command);
+
+        $this->addFlash('success', 'Task was finished');
+
+        return $this->redirectToRoute('task_show', ['id' => $id]);
     }
 
     /**
