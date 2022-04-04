@@ -61,4 +61,9 @@ final class TaskSnippet
     {
         Assert::assertStringContainsString('Overdue', $this->dueDate());
     }
+
+    public function assertIsFinished(): void
+    {
+        Assert::assertStringContainsString('Finished', $this->dueDate());
+    }
 }

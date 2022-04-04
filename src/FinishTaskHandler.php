@@ -24,7 +24,8 @@ final class FinishTaskHandler
         }
 
         /** @var Task $task */
-        $task->setIsFinished(true);
+        $task->finish();
+
         $this->doctrine->getManager()->flush();
     }
 }

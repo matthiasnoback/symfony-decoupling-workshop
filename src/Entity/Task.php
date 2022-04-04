@@ -94,13 +94,17 @@ class Task
         return $this->assignedTo;
     }
 
-    public function setIsFinished(bool $isFinished): void
-    {
-        $this->isFinished = $isFinished;
-    }
-
     public function isFinished(): bool
     {
         return $this->isFinished;
+    }
+
+    public function finish(): void
+    {
+        if ($this->isFinished()) {
+            throw new \RuntimeException('Task already finished');
+        }
+
+        $this->isFinished = true;
     }
 }

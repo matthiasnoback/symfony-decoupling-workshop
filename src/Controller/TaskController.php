@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DTO\TaskDTORepositoryInterface;
 use App\Entity\Note;
 use App\Entity\Task;
 use App\Entity\User;
@@ -108,17 +109,10 @@ final class TaskController extends AbstractController
     /**
      * @Route("/", name="task_list")
      */
-    public function list(ManagerRegistry $doctrine): Response
+    public function list(TaskDTORepositoryInterface $taskDTORepository): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $doctrine->getRepository(Task::class)->findBy(
-                [
-                    'isFinished' => false
-                ],
-                [
-                    'dueDate' => 'ASC'
-                ]
-            ),
+            'tasks' => $taskDTORepository->findAll(),
             'now' => new DateTimeImmutable()
         ]);
     }

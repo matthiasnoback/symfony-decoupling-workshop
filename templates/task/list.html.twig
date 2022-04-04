@@ -8,12 +8,16 @@
         <div class="card-body">
             <h5 class="card-title task-task"><a href="{{ path('task_show', { id: task.id }) }}" aria-label="Show">{{ task.task }}</a></h5>
             <p class="card-text task-due-date"><small class="text-muted">Due date: {{ task.dueDate|date('Y-m-d') }}</small>
-            {% if task.dueDate < now %}<span class="badge bg-danger">Overdue</span>{% endif %}</p>
+            {% if task.dueDate < now and not task.finished %}<span class="badge bg-danger">Overdue</span>{% endif %}
+            {% if task.finished %}<span class="badge bg-success">Finished</span>{% endif %}
+            </p>
             <a href="{{ path('task_edit', { id: task.id }) }}" class="btn btn-primary">Edit</a>
 
+            {% if not task.finished %}
             <form method="post" action="{{ path('task_finish', { id: task.id }) }}">
                 <button type="submit" class="btn btn-success">Finish</button>
             </form>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

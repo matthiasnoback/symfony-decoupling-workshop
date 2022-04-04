@@ -111,7 +111,7 @@ final class TaskUITest extends WebTestCase
 
         $this->listTasks()->taskWithName('Test')->finish();
 
-        $this->listTasks()->assertTaskNotExists('Test');
+        $this->listTasks()->taskWithName('Test')->assertIsFinished();
     }
 
     public function testAddComment(): void
