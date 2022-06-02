@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Tasks\Domain\Model\Task;
 
-use App\Domain\Model\Task\TaskWasAlreadyFinished;
+use App\Tasks\Domain\Model\Task\TaskWasAlreadyFinished;
 use App\Domain\Model\Task\TaskWasFinished;
+use App\Entity\User;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

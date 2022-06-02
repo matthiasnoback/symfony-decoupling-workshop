@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Entity\Task;
+use App\Tasks\Domain\Model\Task\Task;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;

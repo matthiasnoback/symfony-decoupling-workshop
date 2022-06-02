@@ -1,5 +1,9 @@
-controllers:
+app_controllers:
     resource: ../src/Controller/
+    type: annotation
+
+tasks_controllers:
+    resource: ../src/Tasks/Infrastructure/Http/
     type: annotation
 
 kernel:

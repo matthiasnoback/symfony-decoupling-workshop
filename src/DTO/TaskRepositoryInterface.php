@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-interface TaskDTORepositoryInterface
+use App\Tasks\Application\TaskForList;
+
+interface TaskRepositoryInterface
 {
     /**
-     * @return array<TaskDTO>
+     * @return array<TaskForList>
      */
     public function findAll(): array;
 }

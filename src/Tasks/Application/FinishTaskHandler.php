@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App;
+namespace App\Tasks\Application;
 
-use App\Entity\Task;
+use App\Tasks\Application\FinishTask;
+use App\Tasks\Domain\Model\Task\Task;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 

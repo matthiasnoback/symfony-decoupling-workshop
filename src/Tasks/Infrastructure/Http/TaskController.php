@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Tasks\Infrastructure\Http;
 
-use App\Domain\Model\Task\TaskWasAlreadyFinished;
+use App\Tasks\Domain\Model\Task\TaskWasAlreadyFinished;
 use App\Domain\Model\Task\TaskWasFinished;
-use App\DTO\TaskDTORepositoryInterface;
+use App\DTO\TaskRepositoryInterface;
 use App\Entity\Note;
-use App\Entity\Task;
+use App\Tasks\Domain\Model\Task\Task;
 use App\Entity\User;
-use App\FinishTask;
+use App\Tasks\Application\FinishTask;
 use App\Form\NoteType;
 use App\Form\TaskType;
-use App\TaskInterface;
+use App\Tasks\Application\TasksInterface;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,7 +97,7 @@ final class TaskController extends AbstractController implements EventSubscriber
     /**
      * @Route("/task/finish/{id}", name="task_finish", methods={"POST"})
      */
-    public function finish(int $id, TaskInterface $task, EventDispatcherInterface $eventDispatcher): Response
+    public function finish(int $id, TasksInterface $task, EventDispatcherInterface $eventDispatcher): Response
     {
         $command = new FinishTask($id);
         $task->finishTask($command);
@@ -132,10 +132,10 @@ final class TaskController extends AbstractController implements EventSubscriber
     /**
      * @Route("/", name="task_list")
      */
-    public function list(TaskDTORepositoryInterface $taskDTORepository): Response
+    public function list(TasksInterface $tasks): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $taskDTORepository->findAll(),
+            'tasks' => $tasks->findAllTasks(),
             'now' => new DateTimeImmutable()
         ]);
     }

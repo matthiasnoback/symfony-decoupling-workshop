@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine;
 
-use App\DTO\TaskDTO;
-use App\DTO\TaskDTORepositoryInterface;
-use App\Entity\Task;
+use App\Tasks\Application\TaskForList;
+use App\DTO\TaskRepositoryInterface;
+use App\Tasks\Domain\Model\Task\Task;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class TaskDTORepository implements TaskDTORepositoryInterface
+final class TaskRepository implements TaskRepositoryInterface
 {
     public function __construct(
         private readonly ManagerRegistry $doctrine
@@ -18,7 +18,7 @@ final class TaskDTORepository implements TaskDTORepositoryInterface
     public function findAll(): array
     {
         return array_map(
-            fn(Task $task) => new TaskDTO(
+            fn(Task $task) => new TaskForList(
                 $task->getId(),
                 $task->getTask(),
                 $task->isFinished(),
